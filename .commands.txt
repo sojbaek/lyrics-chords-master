@@ -6,6 +6,7 @@ npm install -g nodemon
 
 nodemon server
 
+npx create-react-app frontend
 
 npm install react react-router-dom
 npm install bootstrap
