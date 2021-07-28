@@ -1,0 +1,14 @@
+cd backend
+npm init -y
+npm install express mongodb cors dotenv
+npm install --save-dev @babel/core @babel/cli @babel/preset-env
+npm install -g nodemon 
+
+nodemon server
+
+
+npm install react react-router-dom
+npm install bootstrap
+npm install axios
+
+npm start
