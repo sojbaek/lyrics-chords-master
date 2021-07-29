@@ -101,24 +101,25 @@ export default class SongsDAO {
     }
   }
 
-//   static async getGenres() {
-//     let genres = []
-//     try {
-// 		genres = await songs.distinct("genre")
-//       return genres
-//     } catch (e) {
-//       console.error(`Unable to get genres, ${e}`)
-//       return genres
-//     }
-//   }
+  static async getGenres() {
+    let genres = []
+    try {
+		genres = await songs.distinct("genre")
+      return genres
+    } catch (e) {
+      console.error(`Unable to get genres, ${e}`)
+      return genres
+    }
+  }
 
-  static async addSong(title, artist, lyric, youtube, genre) {
+  static async addSong(user, title, artist, lyric, youtube, genre) {
     try {
       const songDoc = { title: title,
         artist: artist,
         lyric: lyric,
         youtube: youtube,
-        genre: genre
+        genre: genre,
+        user_id: user._id,
        }
       return await songs.insertOne(songDoc)
     } catch (e) {
@@ -127,10 +128,10 @@ export default class SongsDAO {
     }
   }
 
-  static async updateSong(songID, title, artist, lyric, youtube, genre) {
+  static async updateSong(songID, userId, title, artist, lyric, youtube, genre) {
     try {
       const updateSong = await songs.updateOne(
-        { _id: ObjectId(songId)},
+        { user_id: userID, _id: ObjectId(songId)},
         { $set: {title: title,
           artist: artist,
           lyric: lyric,
@@ -144,11 +145,11 @@ export default class SongsDAO {
     }
   }
 
-  static async deleteSong(songId) {
+  static async deleteSong(songId, userID) {
 
     try {
       const deleteSong = await songs.deleteOne({
-        _id: ObjectId(songId)
+        _id: ObjectId(songId), user_id: userID,
       })
 
       return deleteSong

@@ -46,31 +46,37 @@ export default class SongsController {
     }
   }
 
-//   static async apiGetSongGenres(req, res, next) {
-//     try {
-//       let genres = await SongsDAO.getGenres()
-//       res.json(genres)
-//     } catch (e) {
-//       console.log(`api, ${e}`)
-//       res.status(500).json({ error: e })
-//     }
-//   }
+  static async apiGetSongGenres(req, res, next) {
+    try {
+      let genres = await SongsDAO.getGenres()
+      res.json(genres)
+    } catch (e) {
+      console.log(`api, ${e}`)
+      res.status(500).json({ error: e })
+    }
+  }
 
   static async apiPostSong(req, res, next) {
     try {
-      const restaurantId = req.body.restaurant_id
-      const review = req.body.text
+      //const restaurantId = req.body.restaurant_id
+      //const review = req.body.text
+      const title = req.body.title
+      const artist = req.body.artist
+      const lyric = req.body.lyric
+      const youtube = req.body.youtube
+      const genre = req.body.genre
       const userInfo = {
         name: req.body.name,
         _id: req.body.user_id
       }
-      const date = new Date()
-
+      //const date = new Date()
       const SongResponse = await SongsDAO.addSong(
-        restaurantId,
         userInfo,
-        review,
-        date,
+        title,
+        artist,
+        lyric,
+        youtube,
+        genre
       )
       res.json({ status: "success" })
     } catch (e) {
@@ -80,28 +86,33 @@ export default class SongsController {
 
   static async apiUpdateSong(req, res, next) {
     try {
-      const reviewId = req.body.review_id
-      const text = req.body.text
-      const date = new Date()
-
-      const reviewResponse = await SongsDAO.updateSong(
-        reviewId,
+      const songId = req.body.song_id
+      const title = req.body.title
+      const artist = req.body.artist
+      const lyric = req.body.lyric
+      const youtube = req.body.youtube
+      const genre = req.body.genre
+      updateSong(songID, userId, title, artist, lyric, youtube, genre) 
+      const songResponse = await SongsDAO.updateSong(
+        songId, 
         req.body.user_id,
-        text,
-        date,
+        title,
+        artist,
+        lyric,
+        youtube,
+        genre,
       )
 
-      var { error } = reviewResponse
+      var { error } = songResponse
       if (error) {
         res.status(400).json({ error })
       }
 
-      if (reviewResponse.modifiedCount === 0) {
+      if (songResponse.modifiedCount === 0) {
         throw new Error(
-          "unable to update review - user may not be original poster",
+          "unable to update the song - user may not be original poster",
         )
       }
-
       res.json({ status: "success" })
     } catch (e) {
       res.status(500).json({ error: e.message })
@@ -110,11 +121,11 @@ export default class SongsController {
 
   static async apiDeleteSong(req, res, next) {
     try {
-      const reviewId = req.query.id
+      const songId = req.query.id
       const userId = req.body.user_id
-      console.log(reviewId)
+      console.log(songId)
       const reviewResponse = await SongsDAO.deleteSong(
-        reviewId,
+        songId,
         userId,
       )
       res.json({ status: "success" })
