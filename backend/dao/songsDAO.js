@@ -67,7 +67,7 @@ export default class SongsDAO {
         },
               {
                   $lookup: {
-                      from: "reviews",
+                      from: "SongCollection",
                       let: {
                           id: "$_id",
                       },
@@ -111,6 +111,52 @@ export default class SongsDAO {
 //       return genres
 //     }
 //   }
+
+  static async addSong(title, artist, lyric, youtube, genre) {
+    try {
+      const songDoc = { title: title,
+        artist: artist,
+        lyric: lyric,
+        youtube: youtube,
+        genre: genre
+       }
+      return await songs.insertOne(songDoc)
+    } catch (e) {
+      console.error(`Unable to post song: ${e}`)
+      return { error: e }
+    }
+  }
+
+  static async updateSong(songID, title, artist, lyric, youtube, genre) {
+    try {
+      const updateSong = await songs.updateOne(
+        { _id: ObjectId(songId)},
+        { $set: {title: title,
+          artist: artist,
+          lyric: lyric,
+          youtube: youtube,
+          genre: genre } },
+      )
+      return updateSong
+    } catch (e) {
+      console.error(`Unable to update song: ${e}`)
+      return { error: e }
+    }
+  }
+
+  static async deleteSong(songId) {
+
+    try {
+      const deleteSong = await songs.deleteOne({
+        _id: ObjectId(songId)
+      })
+
+      return deleteSong
+    } catch (e) {
+      console.error(`Unable to delete song: ${e}`)
+      return { error: e }
+    }
+  }
 }
 
 
