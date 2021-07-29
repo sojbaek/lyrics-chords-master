@@ -6,8 +6,9 @@ npm install -g nodemon
 
 nodemon server
 
-npx create-react-app frontend
+#npx create-react-app frontend
 
+npm init -y
 npm install react react-router-dom
 npm install bootstrap
 npm install axios
