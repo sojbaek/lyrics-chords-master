@@ -1,5 +1,6 @@
 import mongodb from "mongodb"
-const ObjectId = mongodb.ObjectID
+import {ObjectId} from 'mongodb'
+
 let songs
 
 export default class SongsDAO {
@@ -25,9 +26,11 @@ export default class SongsDAO {
     if (filters) {
       if ("title" in filters) {
         query = { $text: { $search: filters["title"] } }
+   //   } else if ("artist" in filters) {
+   //     query = { "artist": { $eq: filters["artist"] } }
       } else if ("artist" in filters) {
-        query = { "artist": { $eq: filters["artist"] } }
-      } else if ("genre" in filters) {
+        query = { $text: { $search: filters["artist"] } }
+     } else if ("genre" in filters) {
         query = { "genre": { $eq: filters["genre"] } }
       }
     }
@@ -58,43 +61,48 @@ export default class SongsDAO {
   }
 
   static async getSongByID(id) {
+    console.log(`songsDAO:getSongByID(${id})`)
     try {
-      const pipeline = [
-        {
-            $match: {
-                _id: new ObjectId(id),
-            },
-        },
-              {
-                  $lookup: {
-                      from: "SongCollection",
-                      let: {
-                          id: "$_id",
-                      },
-                      pipeline: [
-                          {
-                              $match: {
-                                  $expr: {
-                                      $eq: ["$song_id", "$$id"],
-                                  },
-                              },
-                          },
-                          {
-                              $sort: {
-                                  date: -1,
-                              },
-                          },
-                      ],
-                      as: "reviews",
-                  },
+       const pipeline = [
+         {
+             $match: {
+             //    _id:  new  mongodb.ObjectID(id),
+                 _id: new ObjectId(id)
               },
-              {
-                  $addFields: {
-                      reviews: "$reviews",
-                  },
+      //   },
+              // {
+              //     $lookup: {
+              //         from: "SongCollection",
+              //         let: {
+              //             id: "$_id",
+              //         },
+              //         pipeline: [
+              //             {
+              //                 $match: {
+              //                     $expr: {
+              //                         $eq: ["$song_id", "$$id"],
+              //                     },
+              //                 },
+              //             },
+              //             {
+              //                 $sort: {
+              //                     date: -1,
+              //                 },
+              //             },
+              //         ],
+              //         as: "reviews",
+              //     },
+              // },
+              // {
+              //     $addFields: {
+              //         reviews: "$reviews",
+              //     },
               },
-          ]
-      return await songs.aggregate(pipeline).next()
+         ]
+       return await songs.aggregate(pipeline).next()
+    //  return await songs.find({
+    //    _id : { $eq :  new ObjectId(id) }
+    //  })
     } catch (e) {
       console.error(`Something went wrong in getSongByID: ${e}`)
       throw e

@@ -35,6 +35,7 @@ export default class SongsController {
     try {
       let id = req.params.id || {}
       let song = await SongsDAO.getSongByID(id)
+      console.log(`songs.controller:apiGetSongById(${id})`)
       if (!song) {
         res.status(404).json({ error: "Not found" })
         return
