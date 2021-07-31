@@ -136,10 +136,10 @@ export default class SongsDAO {
     }
   }
 
-  static async updateSong(songID, userId, title, artist, lyric, youtube, genre) {
+  static async updateSong(songId, userId, title, artist, lyric, youtube, genre) {
     try {
       const updateSong = await songs.updateOne(
-        { user_id: userID, _id: ObjectId(songId)},
+        { user_id: userId, _id: ObjectId(songId)},
         { $set: {title: title,
           artist: artist,
           lyric: lyric,

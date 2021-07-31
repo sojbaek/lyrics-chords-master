@@ -1,0 +1,50 @@
+# .get  
+http://localhost:5000/api/v1/songs/id/5e6757f02df37f3d54ddb179
+
+# .post(SongsCtrl.apiPostSong)
+method: Post
+requested url: http://localhost:5000/api/v1/songs/song 
+
+content: 
+{
+    "title" : "Test Song",
+    "artist" : "Test Artist",
+    "lyric" : ["A         Bm        E7        A",
+                "",
+                "Bm7           C#m7    F#7   Bm7     E7      A",
+                "붙들 수 없는 꿈의 조각들은    하나 둘 사라져 가고"],
+    "youtube" : "https://www.youtube.com",
+    "genre" : "Pop",
+    "name" : "root",
+    "user_id": "0"
+}
+
+
+# .put(SongsCtrl.apiUpdateSong)
+method: Put
+requested url: http://localhost:5000/api/v1/songs/song 
+
+content: 
+
+{
+    "song_id" : "6104bb1be3cd66610c6eb435",
+    "title" : "노래 추가 테스트",
+    "artist" : "익명익명익명",
+    "lyric" : ["A7         Bm7        E7        A7",
+                "",
+                 "Bm7           C#m7    F#7   Bm7     E7      A",
+                  "Bm7           C#m7    F#7   Bm7     E7      A",
+                "Bm7           C#m7    F#7   Bm7     E7      A",
+                "Lalalalala"],
+    "youtube" : "https://www.youtube.com",
+    "genre" : "발라드",
+    "user_id": "0"
+}
+
+# .delete(SongsCtrl.apiDeleteSong)
+
+requested url: http://localhost:5000/api/v1/songs/song?id=6104bb1be3cd66610c6eb435
+content: 
+{
+    "user_id": "0"
+}

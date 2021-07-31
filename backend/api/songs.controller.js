@@ -88,15 +88,16 @@ export default class SongsController {
   static async apiUpdateSong(req, res, next) {
     try {
       const songId = req.body.song_id
+      const userId = req.body.user_id
       const title = req.body.title
       const artist = req.body.artist
       const lyric = req.body.lyric
       const youtube = req.body.youtube
       const genre = req.body.genre
-      updateSong(songID, userId, title, artist, lyric, youtube, genre) 
+  //    updateSong(songID, userId, title, artist, lyric, youtube, genre) 
       const songResponse = await SongsDAO.updateSong(
         songId, 
-        req.body.user_id,
+        userId,
         title,
         artist,
         lyric,
