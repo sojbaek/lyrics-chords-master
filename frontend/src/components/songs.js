@@ -10,6 +10,9 @@ const Song = props => {
     cuisine: "",
     reviews: []
   };
+
+  let editing = false;
+
   const [song, setSong] = useState(initialSongState);
 
   const getSong = id => {
@@ -26,6 +29,10 @@ const Song = props => {
   useEffect(() => {
     getSong(props.match.params.id);
   }, [props.match.params.id]);
+
+  const handleInputChange = event => {
+    //setLyric(event.target.value);
+  };
 
   const deleteReview = (reviewId, index) => {
     SongDataService.deleteReview(reviewId, props.user.id)
@@ -52,7 +59,17 @@ const Song = props => {
             <strong>Artist: </strong>{song.artist}<br/>
             <strong>Youtube: </strong>{song.youtube}<br/>
             <strong><label for="lyrics">lyrics:</label></strong>
-            <textarea> { song.lyric.join() } </textarea>
+            <div className="form-group">
+              <label htmlFor="lyrics">{ editing ? "Edit" : "Create" }Lyrics</label>
+              <textarea
+                rows="50"
+                cols="100"
+                className="form-control"
+                id="lyrics"
+                onChange={handleInputChange}
+                name="text"
+              >{song.lyric}</textarea>
+            </div>
           </p>
         </div>
       ) : (
