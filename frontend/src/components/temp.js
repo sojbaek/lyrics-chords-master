@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import SongDataService from "../services/song";
 import { Link } from "react-router-dom";
+//import { makeStyles } from "@material-ui/core/styles";
+//import TextField from "@material-ui/core/TextField";
 
 const Song = props => {
   const initialSongState = {
@@ -54,16 +56,17 @@ const Song = props => {
     <div>
       {song ? (
         <div>
-          <h5>{song.title} - {song.artist}</h5> 
+          <h5>{song.title}</h5>
           <p>
-            <strong>Genre: </strong>{song.genre} <br/>
-            <iframe allowfullscreen="true" frameborder="0"  src={song.youtube}></iframe><br/>
-            <div className="form-group">
-              <strong><label for="lyrics">lyrics:</label></strong>
-            </div>
+            <strong>Genre: </strong>{song.genre}<br/>
+            <strong>Artist: </strong>{song.artist}<br/>
+            <strong>Youtube: </strong>{song.youtube}<br/>
+            <strong><label for="lyrics">lyrics:</label></strong>
             <div className="form-group">
               <label htmlFor="lyrics">{ editing ? "Edit" : "Create" }Lyrics</label>
-              <textarea className="form-control" id="lyrics" rows={song.lyric.length} onChange={handleInputChange} value={song.lyric.join('\n')}>          
+              <textarea class="form-control" id="lyrics" rows="20" onChange={handleInputChange}>
+              Hello1
+              Hello2
               </textarea>
             </div>
           </p>
@@ -78,4 +81,4 @@ const Song = props => {
   );
 };
 
-export default Song;
+//export default Song;

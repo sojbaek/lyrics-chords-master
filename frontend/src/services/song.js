@@ -14,15 +14,15 @@ class SongDataService {
   } 
 
   createSong(data) {
-    return http.post("/song-new", data);
+    return http.post("/song", data);
   }
 
   updateSong(data) {
-    return http.put("/song-edit", data);
+    return http.put("/song", data);
   }
 
   deleteSong(id, userId) {
-    return http.delete(`/song-delete?id=${id}`, {data:{user_id: userId}});
+    return http.delete(`/song?id=${id}`, {data:{user_id: userId}});
   }
 
   getGenres(id) {
