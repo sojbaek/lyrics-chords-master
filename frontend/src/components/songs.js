@@ -46,25 +46,30 @@ const Song = props => {
 
   let editing = false;
 
+  var lyrics = null;
+
   const [song, setSong] = useState(initialSongState);
   const [key, setKey] = useState("");
-  const [lyrics, setLyrics] = useState(null);
+//  const [lyrics, setLyrics] = useState(null);
   const [keys, setKeys] = useState([]);
   const [transeposedLyrics, setTransposedLyrics] = useState([]);
 
   const getSong = id => {
     SongDataService.get(id)
       .then(response => {
-        setSong(response.data);
-        console.log(response.data);
-        console.log("song="+ song)
-        setLyrics(new LyricsWithChords(song["lyric"].join('\n')))
-        console.log("lyrics="+ lyrics)
-        setKeys(lyrics.getTransposalKeys())
-        console.log("keys="+ keys)
+        var currentSong = response.data
+        setSong(currentSong);
+        console.log("1.song.title="+ currentSong.title)
+        lyrics = new LyricsWithChords(currentSong["lyric"].join('\n'));
+        //setLyrics(lyr)
+        console.log("2.lyrics.lyric="+ lyrics.lyric)
+        var trkeys = lyrics.getTransposalKeys()
+        setKeys(trkeys)
+        console.log("3.keys="+ lyrics.getTransposalKeys())
         setKey(keys[6])
-        console.log("key="+ key)
-        setTransposedLyrics(lyrics.transpose(keys.indexOf(key)-6))
+      //  var trkey = keys[6];
+        console.log("4.key="+ trkeys[6])
+        setTransposedLyrics(lyrics.transpose(trkeys.indexOf(trkeys[6])-6))
       })
       .catch(e => {
         console.log(e);
@@ -96,7 +101,9 @@ const Song = props => {
 
   const onChangeKey = e => {
     setKey( e.target.value );
-    setTransposedLyrics(lyrics.transpose(keys.indexOf(e.target.value)-6))
+    if (lyrics != null) {
+      setTransposedLyrics(lyrics.transpose(keys.indexOf(e.target.value)-6))
+    }
     console.log("new key=" + e.target.value )
    // setSearchCuisine(searchCuisine);
   };
@@ -107,7 +114,6 @@ const Song = props => {
         <div>
           <h5>{song.title} - {song.artist}</h5> 
           <br/>
-          <p>
             <strong>Artist: </strong>{song.artist} <br/>
             <strong>Genre: </strong>{song.genre} <br/>
             <div className="form-group">
@@ -121,7 +127,6 @@ const Song = props => {
               <br/>
               <Lyrics text={transeposedLyrics}/>
             </div>
-          </p>
           {//<iframe allowfullscreen="true" frameborder="0"  src={song.youtube} title={song.title}></iframe><br/>
           }
         </div>
