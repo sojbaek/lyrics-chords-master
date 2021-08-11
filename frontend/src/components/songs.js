@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import SongDataService from "../services/song";
 import { Link } from "react-router-dom";
-
+import "../App.css"
 import LyricsWithChords from '../lyricsWithChords.js'
+import YoutubeEmbed from "./youtube-embed";
 
 const Transpose = props => {
  // console.log("default key=" + props.selected)
@@ -12,9 +13,9 @@ const Transpose = props => {
         <label>
           Key:
           <select value={props.selected} onChange={props.onKeyChange} >
-            { props.keys.map(key => {
+            { props.keys.map(kk => {
               return(
-                <option value={key} >{key}</option>
+                <option value={kk} >{kk}</option>
               )
             }) 
             }
@@ -46,12 +47,10 @@ const Song = props => {
 
   let editing = false;
 
-  var lyrics = null;
-
   const [song, setSong] = useState(initialSongState);
   const [key, setKey] = useState("");
-//  const [lyrics, setLyrics] = useState(null);
-  const [keys, setKeys] = useState([]);
+  const [lyrics, setLyrics] = useState(null);
+// const [keys, setKeys] = useState([]);
   const [transeposedLyrics, setTransposedLyrics] = useState([]);
 
   const getSong = id => {
@@ -60,16 +59,16 @@ const Song = props => {
         var currentSong = response.data
         setSong(currentSong);
         console.log("1.song.title="+ currentSong.title)
-        lyrics = new LyricsWithChords(currentSong["lyric"].join('\n'));
-        //setLyrics(lyr)
-        console.log("2.lyrics.lyric="+ lyrics.lyric)
-        var trkeys = lyrics.getTransposalKeys()
-        setKeys(trkeys)
-        console.log("3.keys="+ lyrics.getTransposalKeys())
-        setKey(keys[6])
+        var lyr = new LyricsWithChords(currentSong["lyric"].join('\n'));
+        setLyrics(lyr)
+        console.log("2.lyrics.lyric="+ lyr.lyric)
+        //var trkeys = lyrics.getTransposalKeys()
+       // setKeys(trkeys)
+        console.log("3.keys="+ lyr.getTransposalKeys())
+        setKey(lyr.getTransposalKeys()[6])
       //  var trkey = keys[6];
-        console.log("4.key="+ trkeys[6])
-        setTransposedLyrics(lyrics.transpose(trkeys.indexOf(trkeys[6])-6))
+     //   console.log("4.key="+ trkeys[6])
+        setTransposedLyrics(lyr.transpose(0))
       })
       .catch(e => {
         console.log(e);
@@ -102,7 +101,8 @@ const Song = props => {
   const onChangeKey = e => {
     setKey( e.target.value );
     if (lyrics != null) {
-      setTransposedLyrics(lyrics.transpose(keys.indexOf(e.target.value)-6))
+      var idx = lyrics.getTransposalKeys().indexOf(e.target.value)-6
+      setTransposedLyrics(lyrics.transpose(idx))
     }
     console.log("new key=" + e.target.value )
    // setSearchCuisine(searchCuisine);
@@ -121,14 +121,13 @@ const Song = props => {
             </div>
             <div className="form-group">
               <br></br>
-              <Transpose keys={keys} selected={key} 
+              <Transpose keys={ lyrics == null ? [] : lyrics.getTransposalKeys()} selected={key} 
                 onKeyChange={onChangeKey}>
               </Transpose>
               <br/>
               <Lyrics text={transeposedLyrics}/>
             </div>
-          {//<iframe allowfullscreen="true" frameborder="0"  src={song.youtube} title={song.title}></iframe><br/>
-          }
+          <YoutubeEmbed embedId={song.youtube}></YoutubeEmbed>
         </div>
       ) : (
         <div>

@@ -162,9 +162,6 @@ LyricsWithChords.prototype.transposeChord = function(ch, diff,isMinor) {
     return(new Chord(newlabel, ch.from, ch.from+newlabel.length-1))
 }
 
-
-
-
 LyricsWithChords.prototype.displayChords = function() {
     // var chordlistlength = this.chordsList.length;
     // if (chordlistlength  == 0) {
