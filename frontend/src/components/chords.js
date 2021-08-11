@@ -1,18 +1,18 @@
 import React, { useRef, useEffect } from 'react'
 
-let xmargin = 6
-let ymargin = 5
-let bottommargin = 2
-let xlabw = 8
-let ylabw = 13
-let numfret = 4
-let LINEWIDTH = .75
-let CHORDWIDTH = 50
-let CHORDHEIGHT= 60
-let xstep = (CHORDWIDTH - 2*xmargin-xlabw) / 5.0;
-let ystep = (CHORDHEIGHT - 2*ymargin-ylabw-bottommargin) / numfret;
+const xmargin = 6
+const ymargin = 5
+const bottommargin = 2
+const xlabw = 8
+const ylabw = 13
+const numfret = 4
+const LINEWIDTH = .75
+const CHORDWIDTH = 50
+const CHORDHEIGHT= 60
+const xstep = (CHORDWIDTH - 2*xmargin-xlabw) / 5.0;
+const ystep = (CHORDHEIGHT - 2*ymargin-ylabw-bottommargin) / numfret;
 //var canvasID = 0
-var chordDict = {
+const chordDict = {
     "Ab":"466544",    "Abm":"466444",    "Ab6":"431111",    "Ab7":"xx1112",    "Ab9":"xx1312",    "Abm6":"xxx444",    "Abm7":"xx1102",    "Abmaj7":"xx1113",    "Abdim":"xx0101",    "Ab+":"x2110",    "Absus":"xx1124","Absus4":"xx1124",
     "A":"x02220",    "Am":"x02210",    "A6":"x02222",    "A7":"x02223",    "A9":"x02423",    "Am6":"x02212",    "Am7":"x02213",    "Amaj7":"x02120",    "Adim":"xx1212",    "A+":"x03221",    "Asus":"x02230","Asus4":"x02230",
     "A#":"x13331",    "A#m":"x13321",    "A#6":"113333",    "A#7":"xx3334",    "A#9":"335333",    "A#m6":"xx3323",    "A#m7":"xx3324",    "A#maj7":"x1323x",    "A#dim":"xx2323",    "A#+":"xx0332",    "A#sus":"xx3341","A#sus4":"xx3341",
