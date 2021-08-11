@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import "../App.css"
 import LyricsWithChords from '../lyricsWithChords.js'
 import YoutubeEmbed from "./youtube-embed";
+import GChord from "./chords";
+import ChordsList from "./chords-list";
 
 const Transpose = props => {
  // console.log("default key=" + props.selected)
@@ -65,6 +67,7 @@ const Song = props => {
         //var trkeys = lyrics.getTransposalKeys()
        // setKeys(trkeys)
         console.log("3.keys="+ lyr.getTransposalKeys())
+        console.log("4. Chords used="+ Array.from(lyr.chordsUsed))
         setKey(lyr.getTransposalKeys()[6])
       //  var trkey = keys[6];
      //   console.log("4.key="+ trkeys[6])
@@ -124,6 +127,8 @@ const Song = props => {
               <Transpose keys={ lyrics == null ? [] : lyrics.getTransposalKeys()} selected={key} 
                 onKeyChange={onChangeKey}>
               </Transpose>
+              <br/>
+              <ChordsList chords={lyrics == null? [] : lyrics.chordsUsed}/>
               <br/>
               <Lyrics text={transeposedLyrics}/>
             </div>

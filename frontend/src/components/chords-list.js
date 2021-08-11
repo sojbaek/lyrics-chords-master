@@ -1,22 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import GChord from "./gChord";
+import GChord from "./chords";
+
+// 
 
 const ChordsList = ({ chords }) => {
-  if (chords != null) {
-    // var chordlistlength = this.chordsList.length;
-    // if (chordlistlength  == 0) {
-    //     for (const x of this.chordsUsed) {
-    //         this.chordsList.push(new GChord(x));
-    //     }
-    // } else {
-    //     let array = Array.from(this.chordsUsed);
-    //     for (var ii= 0; ii < chordlistlength; ii++) {
-    //         var chord = array[ii];
-    //         this.chordsList[ii].setChord(chord);
-    //     }
-    // }    
-  } 
+   return(
+      Array.from(chords).map( (chord) => <GChord name={chord}/> )
+   ) 
 };
 
 ChordsList.propTypes = {
