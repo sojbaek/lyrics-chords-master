@@ -30,6 +30,11 @@ function App() {
               Songs
             </Link>
           </li>
+          <li className="nav-item">
+            <Link to={"/songs/add"} className="nav-link">
+              Add
+            </Link>
+          </li>
           <li className="nav-item" >
             { user ? (
               <a onClick={logout} className="nav-link" style={{cursor:'pointer'}}>
@@ -48,7 +53,13 @@ function App() {
         <Switch>
           <Route exact path={["/", "/songs"]} component={SongsList} />
           <Route 
-            path="/songs/:id/review"
+            path="/songs/add"
+            render={(props) => (
+              <AddSong {...props} user={user} />
+            )}
+          />
+          <Route 
+            path="/songs/:id/edit"
             render={(props) => (
               <AddSong {...props} user={user} />
             )}

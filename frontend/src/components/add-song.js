@@ -9,7 +9,7 @@ const AddSong = props => {
     artist: "",
     genre: "",
     youtube: "",
-    lyric: []
+    lyrics: ""
   };
 
 
@@ -23,22 +23,27 @@ const AddSong = props => {
   const [song, setSong] = useState(initialSongState);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleInputChange = event => {
-    setSong(event.target.value);
+  const handleTitleChange = event => {
+    setSong(prevState => {
+      let song = Object.assign({}, prevState.song);  // creating copy of state variable jasper
+      song.title = event.target.value;                     // update the name property, assign a new value                 
+      return { song };                                 // return new object jasper object
+    })
   };
 
   const saveSong = () => {
     var data = {
-      title: "",
-      artist: "",
-      genre: "",
-      youtube: "",
+      title: song.title,
+      artist: song.artist,
+      genre: song.genre,
+      youtube: song.youtube,
       lyric: [],
       name: props.user.name,
       user_id: props.user.id,
       song_id: props.match.params.id
     };
 
+    console.log("title=" + song.title)
     if (editing) {
       data.song_id = props.location.state.currentSong._id
       RestaurantDataService.updateSong(data)
@@ -62,6 +67,7 @@ const AddSong = props => {
 
   };
 
+  console.log("props.user="+ props.user)
   return (
     <div>
       {props.user ? (
@@ -77,53 +83,57 @@ const AddSong = props => {
           <div>
               <label htmlFor="description">{ editing ? "Edit" : "Create" } a song</label>
             <div className="form-group">
-              <h4>Title:</h4>
+              Title:
               <input
                 type="text"
                 className="form-control"
                 id="textTitle"
                 required
-                value={review}
-                onChange={handleInputChange}
-                name="text"
+                value={song.title}
+                onChange={handleTitleChange}
+                name="textTitle"
               />
             </div>
             <div className="form-group">
-              <h4>Artist:</h4>
+              Artist:
               <input
                 type="text"
                 className="form-control"
                 id="textArtist"
                 required
-                value={review}
-                onChange={handleInputChange}
-                name="text"
+                value={song.artist}
+                name="textArtist"
               />
             </div>
             <div className="form-group">
-              <h4>Genre:</h4>
+              Genre:
               <input
                 type="text"
                 className="form-control"
                 id="textGenre"
                 required
-                value={review}
-                onChange={handleInputChange}
+                value={song.genre}
                 name="text"
               />
             </div>
             <div className="form-group">
-              <h4>Lyrics:</h4>
+              Youtube (embedID only):
               <input
                 type="text"
                 className="form-control"
-                id="textGenre"
+                id="textYoutube"
                 required
-                value={review}
-                onChange={handleInputChange}
-                name="text"
+                value={song.youtube}
+                name="textYoutube"
               />
             </div>
+
+            <div class="mb-3">
+              <label for="FormControlTextarea1" class="form-label">Lyrics</label>
+              <textarea class="form-control" id="TextareaLyrics" rows="20" > 
+              </textarea>
+            </div>
+
             <button onClick={saveSong} className="btn btn-success">
               Submit
             </button>
@@ -141,4 +151,4 @@ const AddSong = props => {
   );
 };
 
-export default AddReview;
+export default AddSong;
