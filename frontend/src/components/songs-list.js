@@ -45,9 +45,7 @@ const SongsList = props => {
   const retrieveGenres = () => {
     SongDataService.getGenres()
       .then(response => {
-        console.log(response.data);
-        setGenres(["All genres"].concat(response.data));
-        
+       setGenres(["All genres"].concat(response.data));
       })
       .catch(e => {
         console.log(e);

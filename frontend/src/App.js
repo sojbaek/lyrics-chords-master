@@ -6,6 +6,7 @@ import AddSong from "./components/add-song";
 import Song from "./components/songs";
 import SongsList from "./components/songs-list";
 import Login from "./components/login";
+import EditSong from "./components/edit-song";
 
 function App() {
   const [user, setUser] = React.useState(null);
@@ -61,7 +62,7 @@ function App() {
           <Route 
             path="/songs/:id/edit"
             render={(props) => (
-              <AddSong {...props} user={user} />
+              <EditSong {...props} user={user} />
             )}
           />
           <Route 
