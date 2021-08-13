@@ -3,23 +3,26 @@ import SongDataService from "../services/song";
 import { Link } from "react-router-dom";
 
 const EditSong = props => {
-    const initialSongState = {
-    id: null,
+    
+  const initialSongState = {
+    _id: "",
     title: "",
     artist: "",
     genre: "",
     youtube: "",
-    lyrics: ""
+    lyric: [],
+    user_id: ""
   };
 
-
+  let props_user = { name: "test", id: "0" }
   let editing = true;
 
   if (props.location.state && props.location.state.currentSong) {
     editing = true;
     initialSongState = props.location.state.currentSong
   }
-
+  
+  const [lyrics, setLyrics] = useState("");
   const [song, setSong] = useState(initialSongState);
   const [submitted, setSubmitted] = useState(false);
 
@@ -30,8 +33,9 @@ const EditSong = props => {
   const getSong = id => {
     SongDataService.get(id)
       .then(response => {
-        var currentSong = response.data
-        setSong(currentSong);
+         console.log(response.data)
+         setLyrics(response.data.lyric.join("\n"))
+         setSong(response.data);
       })
       .catch(e => {
         console.log(e);
@@ -39,12 +43,36 @@ const EditSong = props => {
   };
 
   const handleTitleChange = event => {
-    setSong(prevState => {
-      let song = Object.assign({}, prevState.song);  // creating copy of state variable jasper
-      song.title = event.target.value;                     // update the name property, assign a new value                 
-      return { song };                                 // return new object jasper object
-    })
+    setSong( (state) => {
+       return {...state, title : event.target.value}
+    });
   };
+
+  const handleGenreChange = event => {
+    setSong( (state) => {
+       return {...state, genre : event.target.value}
+    });
+  };
+
+  const handleArtistChange = event => {
+    setSong( (state) => {
+       return {...state, artist : event.target.value}
+    });
+  };
+
+  const handleYoutubeChange = event => {
+    setSong( (state) => {
+       return {...state, youtube : event.target.value}
+    });
+  };
+
+  const handleLyricsChange = event => {
+    setSong( (state) => {
+       return {...state, lyric : event.target.value.split('\n')}
+    });
+    setLyrics(event.target.value)
+  };
+
 
   const saveSong = () => {
     var data = {
@@ -52,16 +80,21 @@ const EditSong = props => {
       artist: song.artist,
       genre: song.genre,
       youtube: song.youtube,
-      lyric: [],
-      name: props.user.name,
-      user_id: props.user.id,
+      lyric: song.lyric,
+      user_id: props_user.id,
       song_id: props.match.params.id
     };
 
+    console.log("props.user="+ props.user)
+    console.log("song.title="+ song.title)
+    console.log("song.genre="+ song.genre)
+    console.log("song.artist="+ song.artist)
+    console.log("song.lyric="+ song.lyric)
     console.log("title=" + song.title)
+
     if (editing) {
-      data.song_id = props.location.state.currentSong._id
-      SongDataService.updateSong(data)
+      data.song_id = props.match.params.id
+        SongDataService.updateSong(data)
         .then(response => {
           setSubmitted(true);
           console.log(response.data);
@@ -81,9 +114,14 @@ const EditSong = props => {
     }
   };
 
-  var props_user = "default_user"; // temporary
-
   console.log("props.user="+ props.user)
+  console.log("song.title="+ song.title)
+  console.log("song.genre="+ song.genre)
+  console.log("song.artist="+ song.artist)
+  console.log("song.lyric="+ song.lyric)
+  console.log("song.youtube=" + song.youtube)
+
+
   return (
     <div>
       {  props_user ? ( //props.user ? (
@@ -118,6 +156,7 @@ const EditSong = props => {
                 id="textArtist"
                 required
                 value={song.artist}
+                onChange={handleArtistChange}
                 name="textArtist"
               />
             </div>
@@ -129,6 +168,7 @@ const EditSong = props => {
                 id="textGenre"
                 required
                 value={song.genre}
+                onChange={handleGenreChange}
                 name="text"
               />
             </div>
@@ -140,13 +180,15 @@ const EditSong = props => {
                 id="textYoutube"
                 required
                 value={song.youtube}
+                onChange={handleYoutubeChange}
                 name="textYoutube"
               />
             </div>
 
             <div class="mb-3">
               <label for="FormControlTextarea1" class="form-label">Lyrics</label>
-              <textarea class="form-control" id="TextareaLyrics" rows="20" > 
+              <textarea class="form-control" id="TextareaLyrics" rows="20" value={lyrics} 
+              onChange={handleLyricsChange}> 
               </textarea>
             </div>
 
