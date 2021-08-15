@@ -8,8 +8,6 @@ import GChord from "./chords";
 import ChordsList from "./chords-list";
 
 const Transpose = props => {
- // console.log("default key=" + props.selected)
- // console.log("keys=" + props.keys)
     return (
       <form>
         <label>
@@ -47,8 +45,6 @@ const Song = props => {
     lyric: []
   };
 
-  let editing = false;
-
   const [song, setSong] = useState(initialSongState);
   const [key, setKey] = useState("");
   const [lyrics, setLyrics] = useState(null);
@@ -60,14 +56,14 @@ const Song = props => {
       .then(response => {
         var currentSong = response.data
         setSong(currentSong);
-        console.log("1.song.title="+ currentSong.title)
+        //console.log("1.song.title="+ currentSong.title)
         var lyr = new LyricsWithChords(currentSong["lyric"].join('\n'));
         setLyrics(lyr)
-        console.log("2.lyrics.lyric="+ lyr.lyric)
+       // console.log("2.lyrics.lyric="+ lyr.lyric)
         //var trkeys = lyrics.getTransposalKeys()
        // setKeys(trkeys)
-        console.log("3.keys="+ lyr.getTransposalKeys())
-        console.log("4. Chords used="+ Array.from(lyr.chordsUsed))
+       // console.log("3.keys="+ lyr.getTransposalKeys())
+      //  console.log("4. Chords used="+ Array.from(lyr.chordsUsed))
         setKey(lyr.getTransposalKeys()[6])
       //  var trkey = keys[6];
      //   console.log("4.key="+ trkeys[6])
@@ -107,7 +103,7 @@ const Song = props => {
       var idx = lyrics.getTransposalKeys().indexOf(e.target.value)-6
       setTransposedLyrics(lyrics.transpose(idx))
     }
-    console.log("new key=" + e.target.value )
+   // console.log("new key=" + e.target.value )
    // setSearchCuisine(searchCuisine);
   };
 
@@ -115,22 +111,31 @@ const Song = props => {
     <div>
       {song ? (
         <div>
+             
           <h5>{song.title} - {song.artist}</h5> 
-          <br/>
-            <strong>Artist: </strong>{song.artist} <br/>
-            <strong>Genre: </strong>{song.genre} <br/>
+          <Link to={"/songs/" + props.match.params.id + "/edit"} className="btn btn-primary">
+            Edit
+           </Link>
+         <br/>
+           <strong>Artist: </strong>{song.artist} <br/>
+            <strong>Genre: </strong>{song.genre} 
             <div className="form-group">
               <strong><label for="lyrics"></label></strong>
-            </div>
+            </div>            
             <div className="form-group">
-              <br></br>
-              <Transpose keys={ lyrics == null ? [] : lyrics.getTransposalKeys()} selected={key} 
-                onKeyChange={onChangeKey}>
-              </Transpose>
-              <br/>
-              <ChordsList chords={lyrics == null? [] : lyrics.chordsUsed}/>
-              <br/>
-              <Lyrics text={transeposedLyrics}/>
+               { lyrics ? (
+                <div>
+                 <Transpose keys={lyrics.getTransposalKeys()} selected={key} 
+                  onKeyChange={onChangeKey}>
+                 </Transpose>
+                 <br/>
+                 <ChordsList chords={lyrics.chordsUsed}/>
+                 <br/> <br/>
+                 <Lyrics text={transeposedLyrics}/>
+                </div>
+              ) : (
+                <div></div>
+              )}             
             </div>
           <YoutubeEmbed embedId={song.youtube}></YoutubeEmbed>
         </div>
