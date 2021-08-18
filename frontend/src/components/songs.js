@@ -50,6 +50,7 @@ const Song = props => {
   const [lyrics, setLyrics] = useState(null);
 // const [keys, setKeys] = useState([]);
   const [transeposedLyrics, setTransposedLyrics] = useState([]);
+  const [genres, setGenres] = useState([]);
 
   const getSong = id => {
     SongDataService.get(id)
