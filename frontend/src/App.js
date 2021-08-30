@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import AddSong from "./components/add-song";
+//import AddSong from "./components/add-song";
 import Song from "./components/songs";
 import SongsList from "./components/songs-list";
 import Login from "./components/login";
@@ -56,7 +56,7 @@ function App() {
           <Route 
             path="/songs/add"
             render={(props) => (
-              <AddSong {...props} user={user} />
+              <EditSong {...props} user={user} />
             )}
           />
           <Route 

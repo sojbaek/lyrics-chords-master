@@ -37,16 +37,20 @@ const AddSong = props => {
       artist: song.artist,
       genre: song.genre,
       youtube: song.youtube,
-      lyric: [],
+      lyric: song.lyric,
+      user_id: props_user.id,
       name: props.user.name,
-      user_id: props.user.id,
       song_id: props.match.params.id
     };
-
+    console.log("props.user="+ props.user)
+    console.log("song.title="+ song.title)
+    console.log("song.genre="+ song.genre)
+    console.log("song.artist="+ song.artist)
+    console.log("song.lyric="+ song.lyric)
     console.log("title=" + song.title)
     if (editing) {
-      data.song_id = props.location.state.currentSong._id
-      RestaurantDataService.updateSong(data)
+      data.song_id = props.match.params.id
+        SongDataService.updateSong(data)
         .then(response => {
           setSubmitted(true);
           console.log(response.data);
@@ -55,7 +59,7 @@ const AddSong = props => {
           console.log(e);
         });
     } else {
-      RestaurantDataService.createSong(data)
+      SongDataService.createSong(data)
         .then(response => {
           setSubmitted(true);
           console.log(response.data);
