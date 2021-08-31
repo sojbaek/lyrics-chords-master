@@ -37,7 +37,7 @@ const EditSong = props => {
   
   const classes = useStyles();
       
-  const initialSongState = {
+  let initialSongState = {
     _id: "",
     title: "",
     artist: "",
@@ -136,9 +136,10 @@ const EditSong = props => {
     console.log("song.artist="+ song.artist)
     console.log("song.lyric="+ song.lyric)
     console.log("title=" + song.title)
+    console.log("song_id = " + song._id)
 
     if (editing) {
-      data.song_id = props.match.params.id
+        data.song_id = props.match.params.id
         SongDataService.updateSong(data)
         .then(response => {
           setSubmitted(true);
