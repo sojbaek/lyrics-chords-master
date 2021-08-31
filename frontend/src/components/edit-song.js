@@ -48,7 +48,7 @@ const EditSong = props => {
   };
 
   let props_user = { name: "test", id: "0" }
-  let editing = true;
+  let editing = false;
 
   if (props.location.state && props.location.state.currentSong) {
     editing = true;
@@ -127,9 +127,11 @@ const EditSong = props => {
       youtube: song.youtube,
       lyric: song.lyric,
       user_id: props_user.id,
+      name: props_user.name,
       song_id: props.match.params.id
     };
 
+<<<<<<< HEAD
     console.log("props.user="+ props.user)
     console.log("song.title="+ song.title)
     console.log("song.genre="+ song.genre)
@@ -138,6 +140,8 @@ const EditSong = props => {
     console.log("title=" + song.title)
     console.log("song_id = " + song._id)
 
+=======
+>>>>>>> da6a6691855b32080a5a4d2ddfff77ac979a012c
     if (editing) {
         data.song_id = props.match.params.id
         SongDataService.updateSong(data)
@@ -160,13 +164,13 @@ const EditSong = props => {
     }
   };
 
+  console.log("editing=" + editing)
   console.log("props.user="+ props.user)
   console.log("song.title="+ song.title)
   console.log("song.genre="+ song.genre)
   console.log("song.artist="+ song.artist)
   console.log("song.lyric="+ song.lyric)
   console.log("song.youtube=" + song.youtube)
-
 
   return (
     <div>

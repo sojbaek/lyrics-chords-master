@@ -57,17 +57,9 @@ const Song = props => {
       .then(response => {
         var currentSong = response.data
         setSong(currentSong);
-        //console.log("1.song.title="+ currentSong.title)
         var lyr = new LyricsWithChords(currentSong["lyric"].join('\n'));
         setLyrics(lyr)
-       // console.log("2.lyrics.lyric="+ lyr.lyric)
-        //var trkeys = lyrics.getTransposalKeys()
-       // setKeys(trkeys)
-       // console.log("3.keys="+ lyr.getTransposalKeys())
-      //  console.log("4. Chords used="+ Array.from(lyr.chordsUsed))
         setKey(lyr.getTransposalKeys()[6])
-      //  var trkey = keys[6];
-     //   console.log("4.key="+ trkeys[6])
         setTransposedLyrics(lyr.transpose(0))
       })
       .catch(e => {
@@ -104,20 +96,23 @@ const Song = props => {
       var idx = lyrics.getTransposalKeys().indexOf(e.target.value)-6
       setTransposedLyrics(lyrics.transpose(idx))
     }
-   // console.log("new key=" + e.target.value )
-   // setSearchCuisine(searchCuisine);
   };
 
   return (
     <div>
       {song ? (
         <div>
-             
           <h5>{song.title} - {song.artist}</h5> 
-          <Link to={"/songs/" + props.match.params.id + "/edit"} className="btn btn-primary">
-            Edit
-           </Link>
-         <br/>
+          { 
+            (props.user) ? (
+              props.user.id === song.user_id ? (
+                <Link to={"/songs/" + props.match.params.id + "/edit"} className="btn btn-primary">
+                Edit
+               </Link>
+              ) : (<div></div>)
+            ) :  (<div></div>)              
+          }
+          <br/>
            <strong>Artist: </strong>{song.artist} <br/>
             <strong>Genre: </strong>{song.genre} 
             <div className="form-group">
