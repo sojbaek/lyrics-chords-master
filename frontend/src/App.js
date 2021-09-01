@@ -22,9 +22,14 @@ function App() {
   return (
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
+        { /*
         <a href="/songs" className="navbar-brand">
           Lyrics and Chords
         </a>
+        */}
+        <Link to={"/songs"} className="navbar-brand">
+             Lyrics and Chords
+        </Link>
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
             <Link to={"/songs"} className="nav-link">

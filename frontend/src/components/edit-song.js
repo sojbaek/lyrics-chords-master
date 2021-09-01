@@ -1,6 +1,5 @@
 import React, { useState , useEffect} from "react";
 import SongDataService from "../services/song";
-//import {ObjectId} from 'mongodb'
 import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -34,6 +33,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+const randHex = len => {
+  var  maxlen = 8
+  var  min = Math.pow(16,Math.min(len,maxlen)-1) 
+  var  max = Math.pow(16,Math.min(len,maxlen)) - 1
+  var  n   = Math.floor( Math.random() * (max-min+1) ) + min
+  var  r   = n.toString(16)
+  while ( r.length < len ) {
+     r = r + randHex( len - maxlen );
+  }
+  return r;
+};
+
+
 const EditSong = props => {
   
   const classes = useStyles();
@@ -51,21 +63,31 @@ const EditSong = props => {
   let props_user = { name: "test", id: "0" }
   let editing = false;
 
-  console.log("props.location=" + props.location);
+  console.log("props.location=" )
+  console.log(props.location);
 
-  if (props.location.state && props.location.state.currentSong) {
-    
+  //if (props.location.state && props.location.state.currentSong) {
+  //  editing = true;
+  //  initialSongState = props.location.state.currentSong
+  //}
+
+  if (props.match.params.id) {
     editing = true;
-    initialSongState = props.location.state.currentSong
+   // initialSongState = props.location.state.currentSong
+   // console.log(props.location);
   }
-  
+
+  console.log("editing=" +editing);
+
   const [lyrics, setLyrics] = useState("");
   const [song, setSong] = useState(initialSongState);
   const [submitted, setSubmitted] = useState(false);
   const [genres, setGenres] = useState(["All genres"]);
 
   useEffect(() => {
-    getSong(props.match.params.id);
+    if (props.match.params.id) {
+       getSong(props.match.params.id);
+    }    
     retrieveGenres();
   }, [props.match.params.id]);
 
@@ -122,7 +144,6 @@ const EditSong = props => {
     setLyrics(event.target.value)
   };
 
-
   const saveSong = () => {
     var data = {
       title: song.title,
@@ -153,7 +174,7 @@ const EditSong = props => {
           console.log(e);
         });
     } else {      
-      data._id = "ff0230aa3399303932309230"
+      data._id = randHex(24);
       setSong( (state) => {
         return {...state, _id : data._id}
        });
@@ -191,43 +212,20 @@ const EditSong = props => {
           </div>
         ) : (
           <div>
-              <label htmlFor="description"><h2>{ editing ? "Edit" : "Create" } a song</h2></label>
-        { 
-          //  <div className="form-group">
-          //     Title:
-          //     <input
-          //       type="text"
-          //       className="form-control"
-          //       id="textTitle"
-          //       required
-          //       value={song.title}
-          //       onChange={handleTitleChange}
-          //       name="textTitle"
-          //     />
-          //   </div>
-          //   <div className="form-group">
-          //     Artist:
-          //     <input
-          //       type="text"
-          //       className="form-control"
-          //       id="textArtist"
-          //       required
-          //       value={song.artist}
-          //       onChange={handleArtistChange}
-          //       name="textArtist"
-          //     />
-          //   </div>
-        }
+             { /*
+                <label htmlFor="description"><h2>{ editing ? "Edit" : "Create" } a song</h2></label>
+             */ } 
+        
             <div className={classes.layoutroot}>
               <Grid container spacing={3}>
                 <Grid item xs>
                   <form className={classes.root} noValidate autoComplete="off">
-                    <TextField id="standard-required" label="제목 Title"  value={song.title} onChange={handleTitleChange}/>
+                    <TextField id="textfield-title" label="제목 Title"  value={song.title} onChange={handleTitleChange}/>
                   </form>
                 </Grid>
                 <Grid item xs>
                   <form className={classes.sub} noValidate autoComplete="off">
-                   <TextField id="standard-required" label="가수 Artist"  value={song.artist} onChange={handleArtistChange}/>
+                   <TextField id="textfield-artist" label="가수 Artist"  value={song.artist} onChange={handleArtistChange}/>
                    </form>
                 </Grid> 
               </Grid>
@@ -235,10 +233,10 @@ const EditSong = props => {
               <Grid container spacing={3}>
                 <Grid item xs>
                     <div className={classes.sub}> 
-                        <InputLabel id="demo-simple-select-helper-label">장르 Genre</InputLabel>
+                        <InputLabel id="label-genre">장르 Genre</InputLabel>
                         <Select
-                          labelId="genre-simple-select-helper-label"
-                          id="genre-simple-select-helper"
+                          labelId="label-genre"
+                          id="label-genre-list"
                           value={song.genre}
                           onChange={handleGenreChange}
                         >
@@ -256,7 +254,7 @@ const EditSong = props => {
                 </Grid>
                 <Grid item xs>
                     <FormControl className={classes.formControl}>
-                     <TextField id="standard-required" label="유튜브 Youtube"  value={song.youtube} onChange={handleYoutubeChange}/>
+                     <TextField id="textfield-youtube" label="유튜브 Youtube"  value={song.youtube} onChange={handleYoutubeChange}/>
                     <FormHelperText>Some important helper text</FormHelperText>
                  </FormControl>
                 </Grid> 

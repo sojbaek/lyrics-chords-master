@@ -148,16 +148,23 @@ const SongsList = props => {
             <div className="col-lg-4 pb-1">
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">{song.title}</h5>
-                  <p className="card-text">
-                    <strong>Genre: </strong>{song.genre}<br/>
-                    <strong>Artist: </strong>{song.artist}
-                  </p>
                   <div className="row">
                   <Link to={"/songs/"+song._id} className="btn btn-primary col-lg-5 mx-1 mb-1">
-                    View
+                  <h5 className="card-title">{song.title}</h5>  
                   </Link>
                   </div>
+                  <div className="row">
+                  <p className="card-text">
+                    <strong>Genre: </strong>{song.genre}<br/>
+                  </p>
+                  </div>                  
+                  <div className="row">
+                  <p className="card-text">                    
+                    <strong>Artist: </strong>{song.artist}
+                  </p>
+                  </div>                  
+                  
+                  
                 </div>
               </div>
             </div>
