@@ -1,5 +1,6 @@
 import React, { useState , useEffect} from "react";
 import SongDataService from "../services/song";
+//import {ObjectId} from 'mongodb'
 import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -50,7 +51,10 @@ const EditSong = props => {
   let props_user = { name: "test", id: "0" }
   let editing = false;
 
+  console.log("props.location=" + props.location);
+
   if (props.location.state && props.location.state.currentSong) {
+    
     editing = true;
     initialSongState = props.location.state.currentSong
   }
@@ -128,10 +132,9 @@ const EditSong = props => {
       lyric: song.lyric,
       user_id: props_user.id,
       name: props_user.name,
-      song_id: props.match.params.id
+      _id: props.match.params.id
     };
 
-<<<<<<< HEAD
     console.log("props.user="+ props.user)
     console.log("song.title="+ song.title)
     console.log("song.genre="+ song.genre)
@@ -140,10 +143,7 @@ const EditSong = props => {
     console.log("title=" + song.title)
     console.log("song_id = " + song._id)
 
-=======
->>>>>>> da6a6691855b32080a5a4d2ddfff77ac979a012c
-    if (editing) {
-        data.song_id = props.match.params.id
+    if (editing) {                
         SongDataService.updateSong(data)
         .then(response => {
           setSubmitted(true);
@@ -152,10 +152,16 @@ const EditSong = props => {
         .catch(e => {
           console.log(e);
         });
-    } else {
+    } else {      
+      data._id = "ff0230aa3399303932309230"
+      setSong( (state) => {
+        return {...state, _id : data._id}
+       });
+      console.log("new song_id=" + data._id)
       SongDataService.createSong(data)
         .then(response => {
           setSubmitted(true);
+          console.log("song created->")
           console.log(response.data);
         })
         .catch(e => {
@@ -171,7 +177,7 @@ const EditSong = props => {
   console.log("song.artist="+ song.artist)
   console.log("song.lyric="+ song.lyric)
   console.log("song.youtube=" + song.youtube)
-
+  
   return (
     <div>
       {  props_user ? ( //props.user ? (
@@ -179,7 +185,7 @@ const EditSong = props => {
         {submitted ? (
           <div>
             <h4>You submitted successfully!</h4>
-            <Link to={"/songs/" + props.match.params.id} className="btn btn-success">
+            <Link to={"/songs/" + song._id} className="btn btn-success">
               Back to Song
             </Link>
           </div>

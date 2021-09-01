@@ -14,6 +14,8 @@ class SongDataService {
   } 
 
   createSong(data) {
+    console.log("createSong, data=")
+    console.log(data)
     return http.post("/song", data);
   }
 

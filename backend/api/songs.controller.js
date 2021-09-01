@@ -61,6 +61,7 @@ export default class SongsController {
     try {
       //const restaurantId = req.body.restaurant_id
       //const review = req.body.text
+      const songId = req.body._id
       const title = req.body.title
       const artist = req.body.artist
       const lyric = req.body.lyric
@@ -71,7 +72,10 @@ export default class SongsController {
         _id: req.body.user_id
       }
       //const date = new Date()
+      console.log("req.body="+ req.body)
+      console.log("songId="+ songId)
       const SongResponse = await SongsDAO.addSong(
+        songId,
         userInfo,
         title,
         artist,
@@ -87,13 +91,14 @@ export default class SongsController {
 
   static async apiUpdateSong(req, res, next) {
     try {
-      const songId = req.body.song_id
+      const songId = req.body._id
       const userId = req.body.user_id
       const title = req.body.title
       const artist = req.body.artist
       const lyric = req.body.lyric
       const youtube = req.body.youtube
       const genre = req.body.genre
+      console.log("songId="+ songId)
   //    updateSong(songID, userId, title, artist, lyric, youtube, genre) 
       const songResponse = await SongsDAO.updateSong(
         songId, 

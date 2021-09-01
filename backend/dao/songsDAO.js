@@ -120,16 +120,24 @@ export default class SongsDAO {
     }
   }
 
-  static async addSong(user, title, artist, lyric, youtube, genre) {
+  static async addSong(songId, user, title, artist, lyric, youtube, genre) {
     try {
-      const songDoc = { title: title,
+      const songDoc = { 
+        _id: ObjectId(songId),
+        title: title,
         artist: artist,
         lyric: lyric,
         youtube: youtube,
         genre: genre,
         user_id: user._id,
        }
-      return await songs.insertOne(songDoc)
+      //return await songs.insertOne(songDoc)
+      songs.insertOne(songDoc, { forceServerObjectId: false })
+      .then( result => {
+        let id = result.insertedId;
+        console.log("new inserted song ID=" + id)
+      })
+
     } catch (e) {
       console.error(`Unable to post song: ${e}`)
       return { error: e }
